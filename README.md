@@ -3,6 +3,8 @@
 
 <a href="https://codeclimate.com/github/Maksim-Inozemtsev/frontend-project-46/maintainability"><img src="https://api.codeclimate.com/v1/badges/e95d40b2ad47fe5a97c4/maintainability" /></a>
 
+<a href="https://codeclimate.com/github/Maksim-Inozemtsev/frontend-project-46/test_coverage"><img src="https://api.codeclimate.com/v1/badges/e95d40b2ad47fe5a97c4/test_coverage" /></a>
+
 This is npm-project for Node.js v.13 or higher.
 
 It compares two configuration files and shows a difference.
