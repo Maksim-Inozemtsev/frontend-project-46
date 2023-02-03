@@ -9,6 +9,7 @@ const genDiff = (filepath1, filepath2) => {
   const result = compare(sample1, sample2);
   const string = stringifyFunction(result);
   console.log(string);
+  return string;
 };
 
 export default genDiff;
