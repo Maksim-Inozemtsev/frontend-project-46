@@ -9,4 +9,6 @@ This is npm-project for Node.js v.13 or higher.
 
 It compares two configuration files and shows a difference.
 
-https://asciinema.org/a/vrKTzIMvINVJsMKi8LJ7pEwPv - demonstration of the comparison of two flat objects.
+https://asciinema.org/a/vrKTzIMvINVJsMKi8LJ7pEwPv - demonstration of the comparison of two flat .json files.
+
+https://asciinema.org/a/1Iyp70Yc6IbyWL6jiqj8zGMWJ - demonstration of the comparison of two flat .yml (.yaml) files.

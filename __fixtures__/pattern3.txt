@@ -1,0 +1,11 @@
+{
+  - alpha: 1007
+  + alpha: false
+  - climateFS: true
+  - group1: fire
+  + group1: fire8
+  + nextGen: 2024
+    vulpes: inculta
+  - workshop: Value 15
+  + workshop: Value 22
+}
