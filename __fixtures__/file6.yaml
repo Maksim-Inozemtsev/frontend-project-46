@@ -1,5 +1,21 @@
-workshop: Value 22
-alpha: false
-group1: fire8
-vulpes: inculta
-nextGen: 2024
+common:
+  follow: false
+  setting1: Value 1
+  setting3:
+  setting4: blah blah
+  setting5:
+    key5: value5
+  setting6:
+    key: value13
+    ops: i did it again
+    doge:
+      wow: so much
+group1:
+  foo: bar
+  baz: bars
+  nest: str
+group3:
+  deep:
+    id:
+      number: 12
+  fee: 100500

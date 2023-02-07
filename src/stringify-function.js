@@ -1,19 +1,40 @@
 import _ from 'lodash';
 
-const stringifyFunction = (value) => {
-  const iter = (data, depth) => {
-    const filler = '  ';
-    if (!_.isObject(data)) {
-      return `${data}`;
-    }
-    return `{\n${Object.entries(data).reduce((acc, el) => {
-      if (!_.isObject(el[1])) {
-        return `${acc}${filler.repeat(depth)}${el[0]}: ${el[1]}\n`;
-      }
-      return `${acc}${filler.repeat(depth)}${el[0]}: ${iter(el[1], depth + 1)}\n`;
-    }, '')}${filler.repeat(depth - 1)}}`;
+const stringify = (value, currentDepth, replacer = ' ', spacesCount = 2) => {
+  const iter = (currentValue, depth) => {
+    if (!_.isObject(currentValue)) return `${currentValue}`;
+    const lines = Object.entries(currentValue)
+      .map(([key, val]) => `${replacer.repeat(depth * spacesCount)}  ${key}: ${iter(val, depth + 2)}`);
+    return ['{', ...lines, `${replacer.repeat(depth * spacesCount - spacesCount)}}`].join('\n');
   };
-  return iter(value, 1);
+  return iter(value, currentDepth + spacesCount);
 };
 
-export default stringifyFunction;
+const stylish = (resultOfCompare, replacer = ' ', spacesCount = 2) => {
+  const iter = (node, depth) => {
+    const lines = node.map((item) => {
+      const {
+        name, status, children, oldValue, newValue,
+      } = item;
+      if (children.length > 0) {
+        return `${replacer.repeat(spacesCount * depth)}  ${name}: ${iter(children, depth + 2)}`;
+      }
+      if (status === 'changed') {
+        return `${replacer.repeat(spacesCount * depth)}- ${name}: ${stringify(oldValue, depth)}`
+        + '\n'
+        + `${replacer.repeat(spacesCount * depth)}+ ${name}: ${stringify(newValue, depth)}`;
+      }
+      if (status === 'added') {
+        return `${replacer.repeat(spacesCount * depth)}+ ${name}: ${stringify(newValue, depth)}`;
+      }
+      if (status === 'removed') {
+        return `${replacer.repeat(spacesCount * depth)}- ${name}: ${stringify(oldValue, depth)}`;
+      }
+      return `${replacer.repeat(spacesCount * depth)}  ${name}: ${stringify(oldValue, depth)}`;
+    });
+    return ['{', ...lines, `${replacer.repeat(spacesCount * depth - spacesCount)}}`].join('\n');
+  };
+  return iter(resultOfCompare, 1);
+};
+
+export default stylish;

@@ -20,7 +20,7 @@ const pattern1 = readFile('pattern1.txt');
 const pattern2 = readFile('pattern2.txt');
 const pattern3 = readFile('pattern3.txt');
 
-test('flat object', () => {
+test('all sorts of objects', () => {
   expect(genDiff(filepath1, filepath2)).toEqual(pattern1);
 
   expect(genDiff(filepath3, filepath4)).toEqual(pattern2);
