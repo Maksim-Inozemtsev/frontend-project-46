@@ -17,11 +17,14 @@ const filepath4 = getFixturePath('file4.yaml');
 const pattern1 = readFile('pattern1.txt');
 const pattern2 = readFile('pattern2.txt');
 const pattern3 = readFile('pattern3.txt');
+const pattern4 = readFile('pattern4.txt');
 
-test('all sorts of objects', () => {
+test('all variants', () => {
   expect(genDiff(filepath1, filepath2)).toEqual(pattern1);
 
   expect(genDiff(filepath1, filepath2, 'plain')).toEqual(pattern2);
 
   expect(genDiff(filepath3, filepath4)).toEqual(pattern3);
+
+  expect(genDiff(filepath1, filepath2, 'json')).toEqual(pattern4);
 });

@@ -9,8 +9,10 @@ This is npm-project for Node.js v.13 or higher.
 
 It compares two configuration files and shows a difference.
 
-https://asciinema.org/a/XJED3AdYMhnCMDXYe4Sybl0La - demonstration of the comparison of two nested .json files.
+https://asciinema.org/a/XJED3AdYMhnCMDXYe4Sybl0La - demonstration of the comparison of two nested .json files ('stylish' format).
 
-https://asciinema.org/a/2xpSWycO7AZMdft86c63rMOKN - demonstration of the comparison of two nested .yml (.yaml) files.
+https://asciinema.org/a/2xpSWycO7AZMdft86c63rMOKN - demonstration of the comparison of two nested .yml (.yaml) files ('stylish' format).
 
 https://asciinema.org/a/viYGfkVPawhopSnCrL5RDHeei - demonstration of the comparison in 'plane' format.
+
+https://asciinema.org/a/7eMNgkQn0ByFhFo9crrUtcMQG - demonstration of comparison in 'json' format.
