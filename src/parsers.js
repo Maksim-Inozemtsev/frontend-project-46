@@ -4,15 +4,12 @@ import path from 'path';
 
 const parse = (filepath) => {
   const extension = path.extname(filepath);
-  let result;
   switch (extension) {
     case '.json':
-      result = JSON.parse(fs.readFileSync(path.resolve(filepath)));
-      return result;
+      return JSON.parse(fs.readFileSync(path.resolve(filepath)));
     case '.yml':
     case '.yaml':
-      result = yaml.load(fs.readFileSync(path.resolve(filepath)));
-      return result;
+      return yaml.load(fs.readFileSync(path.resolve(filepath)));
     default: throw new Error('Extension unsupported!');
   }
 };
