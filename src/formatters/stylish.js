@@ -16,21 +16,20 @@ const stylish = (resultOfCompare) => {
       const {
         name, status, oldValue, newValue, children,
       } = node;
-      if (status === 'nested') {
-        return `${currentIndent(depth)}  ${name}: ${iter(children, depth + depthStep)}`;
+      switch (status) {
+        case 'nested':
+          return `${currentIndent(depth)}  ${name}: ${iter(children, depth + depthStep)}`;
+        case 'changed':
+          return `${currentIndent(depth)}- ${name}: ${stringify(oldValue, depth, depthStep)}`
+          + '\n'
+          + `${currentIndent(depth)}+ ${name}: ${stringify(newValue, depth, depthStep)}`;
+        case 'added':
+          return `${currentIndent(depth)}+ ${name}: ${stringify(newValue, depth, depthStep)}`;
+        case 'removed':
+          return `${currentIndent(depth)}- ${name}: ${stringify(oldValue, depth, depthStep)}`;
+        default:
+          return `${currentIndent(depth)}  ${name}: ${stringify(oldValue, depth, depthStep)}`;
       }
-      if (status === 'changed') {
-        return `${currentIndent(depth)}- ${name}: ${stringify(oldValue, depth, depthStep)}`
-        + '\n'
-        + `${currentIndent(depth)}+ ${name}: ${stringify(newValue, depth, depthStep)}`;
-      }
-      if (status === 'added') {
-        return `${currentIndent(depth)}+ ${name}: ${stringify(newValue, depth, depthStep)}`;
-      }
-      if (status === 'removed') {
-        return `${currentIndent(depth)}- ${name}: ${stringify(oldValue, depth, depthStep)}`;
-      }
-      return `${currentIndent(depth)}  ${name}: ${stringify(oldValue, depth, depthStep)}`;
     });
     return ['{', ...lines, `${currentIndent(depth - 1)}}`].join('\n');
   };
