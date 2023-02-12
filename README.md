@@ -7,7 +7,16 @@
 
 This is npm-project for Node.js v.13 or higher.
 
-It compares two configuration files and shows a difference.
+The name of the package: @hexlet/code.
+
+To install this package you may use the following command in command line: npm install @hexlet/code.
+
+It compares two configuration files in json, yml and yaml formats and shows a difference.
+
+To run the program use the following command: gendiff <filepath1> <filepath2>.
+
+There are three options of output format. To choose them use the option -f of --format <type>.
+Type may be 'stylish'(default), 'plain' and 'json'.
 
 https://asciinema.org/a/XJED3AdYMhnCMDXYe4Sybl0La - demonstration of the comparison of two nested .json files ('stylish' format).
 

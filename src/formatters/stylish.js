@@ -1,38 +1,38 @@
 import _ from 'lodash';
 
-const stringify = (value, currentDepth, replacer = ' ', spacesCount = 2) => {
-  const iter = (currentValue, depth) => {
-    if (!_.isObject(currentValue)) return `${currentValue}`;
-    const lines = Object.entries(currentValue)
-      .map(([key, val]) => `${replacer.repeat(depth * spacesCount)}  ${key}: ${iter(val, depth + 2)}`);
-    return ['{', ...lines, `${replacer.repeat(depth * spacesCount - spacesCount)}}`].join('\n');
-  };
-  return iter(value, currentDepth + spacesCount);
+const currentIndent = (depth, spacesCount = 2) => ' '.repeat(spacesCount * depth);
+
+const stringify = (value, depth, depthStep) => {
+  const currentDepth = depth + depthStep;
+  if (!_.isObject(value)) return `${value}`;
+  const lines = Object.entries(value)
+    .map(([key, val]) => `${currentIndent(currentDepth)}  ${key}: ${stringify(val, currentDepth, depthStep)}`);
+  return ['{', ...lines, `${currentIndent(currentDepth - 1)}}`].join('\n');
 };
 
-const stylish = (resultOfCompare, replacer = ' ', spacesCount = 2) => {
-  const iter = (node, depth) => {
-    const lines = node.map((item) => {
+const stylish = (resultOfCompare) => {
+  const iter = (data, depth, depthStep = 2) => {
+    const lines = data.map((node) => {
       const {
-        name, status, children, oldValue, newValue,
-      } = item;
-      if (children.length > 0) {
-        return `${replacer.repeat(spacesCount * depth)}  ${name}: ${iter(children, depth + 2)}`;
+        name, status, oldValue, newValue, children,
+      } = node;
+      if (status === 'nested') {
+        return `${currentIndent(depth)}  ${name}: ${iter(children, depth + depthStep)}`;
       }
       if (status === 'changed') {
-        return `${replacer.repeat(spacesCount * depth)}- ${name}: ${stringify(oldValue, depth)}`
+        return `${currentIndent(depth)}- ${name}: ${stringify(oldValue, depth, depthStep)}`
         + '\n'
-        + `${replacer.repeat(spacesCount * depth)}+ ${name}: ${stringify(newValue, depth)}`;
+        + `${currentIndent(depth)}+ ${name}: ${stringify(newValue, depth, depthStep)}`;
       }
       if (status === 'added') {
-        return `${replacer.repeat(spacesCount * depth)}+ ${name}: ${stringify(newValue, depth)}`;
+        return `${currentIndent(depth)}+ ${name}: ${stringify(newValue, depth, depthStep)}`;
       }
       if (status === 'removed') {
-        return `${replacer.repeat(spacesCount * depth)}- ${name}: ${stringify(oldValue, depth)}`;
+        return `${currentIndent(depth)}- ${name}: ${stringify(oldValue, depth, depthStep)}`;
       }
-      return `${replacer.repeat(spacesCount * depth)}  ${name}: ${stringify(oldValue, depth)}`;
+      return `${currentIndent(depth)}  ${name}: ${stringify(oldValue, depth, depthStep)}`;
     });
-    return ['{', ...lines, `${replacer.repeat(spacesCount * depth - spacesCount)}}`].join('\n');
+    return ['{', ...lines, `${currentIndent(depth - 1)}}`].join('\n');
   };
   return iter(resultOfCompare, 1);
 };

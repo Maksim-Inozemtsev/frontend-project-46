@@ -11,9 +11,9 @@ const plain = (resultOfCompare) => {
   const iter = (node, path) => {
     const lines = node.map((item) => {
       const {
-        name, status, children, oldValue, newValue,
+        name, status, oldValue, newValue, children,
       } = item;
-      if (children.length > 0) {
+      if (status === 'nested') {
         return iter(children, `${path}${name}.`);
       }
       if (status === 'changed') {

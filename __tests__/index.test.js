@@ -18,13 +18,26 @@ const pattern1 = readFile('pattern1.txt');
 const pattern2 = readFile('pattern2.txt');
 const pattern3 = readFile('pattern3.txt');
 const pattern4 = readFile('pattern4.txt');
+const pattern5 = readFile('pattern5.txt');
+const pattern6 = readFile('pattern6.txt');
 
-test('all variants', () => {
+test('default output', () => {
   expect(genDiff(filepath1, filepath2)).toEqual(pattern1);
+  expect(genDiff(filepath3, filepath4)).toEqual(pattern4);
+});
 
-  expect(genDiff(filepath1, filepath2, 'plain')).toEqual(pattern2);
+test.each([
+  { format: 'stylish', expected: pattern1 },
+  { format: 'plain', expected: pattern2 },
+  { format: 'json', expected: pattern3 },
+])('Test json files. Output: $format', ({ format, expected }) => {
+  expect(genDiff(filepath1, filepath2, format)).toBe(expected);
+});
 
-  expect(genDiff(filepath3, filepath4)).toEqual(pattern3);
-
-  expect(genDiff(filepath1, filepath2, 'json')).toEqual(pattern4);
+test.each([
+  { format: 'stylish', expected: pattern4 },
+  { format: 'plain', expected: pattern5 },
+  { format: 'json', expected: pattern6 },
+])('Test yml & yaml files. Output: $format', ({ format, expected }) => {
+  expect(genDiff(filepath3, filepath4, format)).toBe(expected);
 });
