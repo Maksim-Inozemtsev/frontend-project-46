@@ -30,7 +30,7 @@ test.each([
   { format: 'stylish', expected: pattern1 },
   { format: 'plain', expected: pattern2 },
   { format: 'json', expected: pattern3 },
-])('Test json files. Output: $format', ({ format, expected }) => {
+])('json files. Output: $format', ({ format, expected }) => {
   expect(genDiff(filepath1, filepath2, format)).toBe(expected);
 });
 
@@ -38,6 +38,6 @@ test.each([
   { format: 'stylish', expected: pattern4 },
   { format: 'plain', expected: pattern5 },
   { format: 'json', expected: pattern6 },
-])('Test yml & yaml files. Output: $format', ({ format, expected }) => {
+])('yml & yaml files. Output: $format', ({ format, expected }) => {
   expect(genDiff(filepath3, filepath4, format)).toBe(expected);
 });
