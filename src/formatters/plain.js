@@ -12,18 +12,15 @@ const plain = (resultOfCompare) => {
     const lines = node
       .filter((item) => item.status !== 'unchanged')
       .map((item) => {
-        const {
-          name, status, oldValue, newValue, children,
-        } = item;
-        switch (status) {
+        switch (item.status) {
           case 'nested':
-            return iter(children, `${path}${name}.`);
+            return iter(item.children, `${path}${item.name}.`);
           case 'changed':
-            return `Property '${path}${name}' was updated. From ${showValue(oldValue, path)} to ${showValue(newValue, path)}`;
+            return `Property '${path}${item.name}' was updated. From ${showValue(item.oldValue, path)} to ${showValue(item.newValue, path)}`;
           case 'added':
-            return `Property '${path}${name}' was added with value: ${showValue(newValue, path)}`;
+            return `Property '${path}${item.name}' was added with value: ${showValue(item.newValue, path)}`;
           case 'removed':
-            return `Property '${path}${name}' was removed`;
+            return `Property '${path}${item.name}' was removed`;
           default:
             return 'error';
         }

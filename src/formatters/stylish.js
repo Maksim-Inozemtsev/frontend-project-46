@@ -1,39 +1,31 @@
 import _ from 'lodash';
 
-const currentIndent = (depth, spacesCount = 2) => ' '.repeat(spacesCount * depth);
+const currentIndent = (depth, spacesCount = 4) => ' '.repeat(spacesCount * depth - 2);
 
-const stringify = (value, depth, depthStep) => {
-  const currentDepth = depth + depthStep;
+const stringify = (value, depth) => {
   if (!_.isObject(value)) return `${value}`;
   const lines = Object.entries(value)
-    .map(([key, val]) => `${currentIndent(currentDepth)}  ${key}: ${stringify(val, currentDepth, depthStep)}`);
-  return ['{', ...lines, `${currentIndent(currentDepth - 1)}}`].join('\n');
+    .map(([key, val]) => `${currentIndent(depth + 1)}  ${key}: ${stringify(val, depth + 1)}`);
+  return ['{', ...lines, `${currentIndent(depth)}  }`].join('\n');
 };
 
 const stylish = (resultOfCompare) => {
-  const iter = (data, depth, depthStep = 2) => {
-    const lines = data.map((node) => {
-      const {
-        name, status, oldValue, newValue, children,
-      } = node;
-      switch (status) {
-        case 'nested':
-          return `${currentIndent(depth)}  ${name}: ${iter(children, depth + depthStep)}`;
-        case 'changed':
-          return `${currentIndent(depth)}- ${name}: ${stringify(oldValue, depth, depthStep)}`
-          + '\n'
-          + `${currentIndent(depth)}+ ${name}: ${stringify(newValue, depth, depthStep)}`;
-        case 'added':
-          return `${currentIndent(depth)}+ ${name}: ${stringify(newValue, depth, depthStep)}`;
-        case 'removed':
-          return `${currentIndent(depth)}- ${name}: ${stringify(oldValue, depth, depthStep)}`;
-        default:
-          return `${currentIndent(depth)}  ${name}: ${stringify(oldValue, depth, depthStep)}`;
-      }
-    });
-    return ['{', ...lines, `${currentIndent(depth - 1)}}`].join('\n');
-  };
-  return iter(resultOfCompare, 1);
+  const iter = (data, depth) => data.map((node) => {
+    switch (node.status) {
+      case 'nested':
+        return `${currentIndent(depth)}  ${node.name}: {\n${iter(node.children, depth + 1).join('')}${currentIndent(depth)}  }\n`;
+      case 'changed':
+        return `${currentIndent(depth)}- ${node.name}: ${stringify(node.oldValue, depth)}\n`
+        + `${currentIndent(depth)}+ ${node.name}: ${stringify(node.newValue, depth)}\n`;
+      case 'added':
+        return `${currentIndent(depth)}+ ${node.name}: ${stringify(node.newValue, depth)}\n`;
+      case 'removed':
+        return `${currentIndent(depth)}- ${node.name}: ${stringify(node.oldValue, depth)}\n`;
+      default:
+        return `${currentIndent(depth)}  ${node.name}: ${stringify(node.value, depth)}\n`;
+    }
+  });
+  return `{\n${iter(resultOfCompare, 1).join('')}}`;
 };
 
 export default stylish;
